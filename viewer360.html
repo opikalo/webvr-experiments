@@ -274,7 +274,7 @@ function createImageMono1(){
 function createImageMono2(){	
 	document.dispatchEvent(new CustomEvent('sourceChange', { detail : {sourceType: 'imageMono'}}));
 
-	var geometry = new THREE.SphereGeometry( 1500, 60, 40 );
+	var geometry = new THREE.SphereGeometry( 300, 60, 40 );
 	geometry.scale( - 1, 1, 1 );
 
 	var material = new THREE.MeshBasicMaterial( {
