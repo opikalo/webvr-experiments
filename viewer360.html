@@ -57,9 +57,9 @@ canvas {
 	<div id='fullScreenContainer'>
 		<div style='position:absolute; top: 10px; width: 100%; text-align: center; font-family: Monospace; font-weight: bold; padding;color:grey; z-index: 1000;'>
 			Viewer of 360 content - using webvr and three.js
-			<br/>
-			<a href='javascript:void(0)' onclick='switchSource("videoMono")' style='color: grey'>video 360</a>
-			<a href='javascript:void(0)' onclick='switchSource("imageMono")' style='color: grey'>image 360</a>
+			<br/>			
+			<a href='javascript:void(0)' onclick='switchSource("imageMono1")' style='color: grey'>image 1 360</a>
+			<a href='javascript:void(0)' onclick='switchSource("imageMono2")' style='color: grey'>image 2 360</a>
 		</div>
 		<div id='buttons'>
 			<i class='fa fa-arrows-alt' id='fullscreenButton'></i>
@@ -236,8 +236,11 @@ function switchSource(sourceType){
 	
 	location.hash = '#'+sourceType
 	
-	if( sourceType === 'imageMono'){
-		container = createImageMono()
+	if( sourceType === 'imageMono1'){
+		container = createImageMono1()
+		scene.add(container)
+	}else if( sourceType === 'imageMono2'){
+		container = createImageMono2()
 		scene.add(container)
 	}else if( sourceType === 'videoMono'){
 		container = createVideoMono()
@@ -251,7 +254,7 @@ document.addEventListener('sourceChange', function onSourceChange(event){
 	console.log('sourceChange', event)
 })
 
-function createImageMono(){	
+function createImageMono1(){	
 	document.dispatchEvent(new CustomEvent('sourceChange', { detail : {sourceType: 'imageMono'}}));
 
 	var geometry = new THREE.SphereGeometry( 500, 60, 40 );
@@ -268,6 +271,25 @@ function createImageMono(){
 	return mesh;
 }
 
+function createImageMono2(){	
+	document.dispatchEvent(new CustomEvent('sourceChange', { detail : {sourceType: 'imageMono'}}));
+
+	var geometry = new THREE.SphereGeometry( 500, 60, 40 );
+	geometry.scale( - 1, 1, 1 );
+
+	var material = new THREE.MeshBasicMaterial( {
+		map: new THREE.TextureLoader().load( 'images/ped_panorama.jpg' )
+		// map: new THREE.TextureLoader().load( 'images/IMG_0405.JPG' )
+	} );
+	material.map.minFilter = THREE.LinearFilter;
+	material.map.format = THREE.RGBFormat;
+
+	var mesh = new THREE.Mesh( geometry, material );
+	return mesh;
+}
+
+	
+	
 function createVideoMono(){
 	var geometry = new THREE.SphereBufferGeometry( 500, 60, 40 );
 	geometry.scale( - 1, 1, 1 );
